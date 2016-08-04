@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+        <title>nbviewer.js</title>
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css'/>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js'></script>    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/prism.min.js' data-manual></script>
+
+    <style type='text/css'>
+        body {
+            font: 0.8em Arial, sans-serif;
+            background-color: #eee;
+        }
+    </style>
+
+    <!-- nbviewer.js -->
+    <link rel='stylesheet' href='lib/nbv.css'/>
+    <script src='lib/nbv.js'></script>
+</head>
+<body>
+
+Load a Jupyter Notebook here: <input type='file' id='dload' />
+<br />(no data is sent anywhere, everything is local)
+
+<div class='nbdocument'></div>
+
+
+<script type='text/javascript'>
+
+    var d = document
+    var dl = d.getElementById('dload')
+    dl.addEventListener('change', function(t) {
+        var fls = t.srcElement.files
+        if (fls.length > 1) {
+            console.error('Only doing one file at a time for now')
+            return
+        }
+
+        var rd = new FileReader()
+        rd.addEventListener('load', function() {
+            var dt = JSON.parse(rd.result)
+            nbv.render(dt, d.getElementsByClassName('nbdocument')[0])
+        }, false)
+
+        rd.readAsText(fls[0])
+    })
+
+</script>
+
+</body>
+</html>
+
