@@ -7,11 +7,36 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css'/>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js'></script>    
     <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/prism.min.js' data-manual></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/components/prism-python.min.js' data-manual></script>
 
     <style type='text/css'>
         body {
             font: 0.8em Arial, sans-serif;
             background-color: #eee;
+        }
+        div#instructions {
+            max-width: 960px;
+            font-size: 2em;
+            color: #aaa;
+            text-align: center;
+            padding-top: 10%;
+            margin: 0 auto;
+        }
+        div#dropzone {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1000;
+            background-color: #7d7;
+            opacity: 0;
+            transition: visibility 500ms, opacity 500ms;
+        }
+        select#file-selector {
+            display: none;
+            /*display: block;*/
+            font-size: 2em;
+            margin: 0 auto;
+            z
         }
     </style>
 
@@ -21,31 +46,118 @@
 </head>
 <body>
 
-Load a Jupyter Notebook here: <input type='file' id='dload' />
-<br />(no data is sent anywhere, everything is local)
+<div id='doc'>
+    <select id='file-selector'></select>
+    <div id='instructions'>Drag and drop Jupyter notebooks anywhere here</div>
 
-<div class='nbdocument'></div>
+</div>
 
 
 <script type='text/javascript'>
-
     var d = document
-    var dl = d.getElementById('dload')
-    dl.addEventListener('change', function(t) {
-        var fls = t.srcElement.files
-        if (fls.length > 1) {
-            console.error('Only doing one file at a time for now')
-            return
+    var doc = d.getElementById('doc')
+
+    var fs = d.getElementById('file-selector')
+    fs.addEventListener('change', function() {
+        var nbs = doc.childNodes
+        for (var j=0; j<nbs.length; j++) {
+            if (nbs[j].nodeName != 'DIV') continue
+            if (nbs[j].getAttribute('rel') == fs.value) {
+                nbs[j].style.display = 'block'
+                continue
+            }
+
+            nbs[j].style.display = 'none'
         }
 
-        var rd = new FileReader()
-        rd.addEventListener('load', function() {
-            var dt = JSON.parse(rd.result)
-            nbv.render(dt, d.getElementsByClassName('nbdocument')[0])
-        }, false)
-
-        rd.readAsText(fls[0])
     })
+
+    var dz = d.createElement('div')
+    dz.style.visibility = 'hidden'
+    dz.setAttribute('id', 'dropzone')
+    d.getElementsByTagName('body')[0].appendChild(dz)
+
+    // we need a separate listener for the windows,
+    // to enable the dropzone
+    // otherwise it'd 'hijack' all clicks and everything
+    window.addEventListener('dragenter', function(e) {
+        dz.style.opacity = .3;
+        dz.style.visibility = ''
+    })
+
+    dz.addEventListener('dragenter', dzenter, false);
+    dz.addEventListener('dragover', dzover, false);
+    dz.addEventListener('drop', dzdrop, false);
+
+    function dzenter(e) {
+        e.stopPropagation()
+        e.preventDefault()
+    }
+    function dzover(e) {
+        e.stopPropagation()
+        e.preventDefault()   
+    }
+    function dzdrop(e) {
+      dz.style.opacity = 0
+      dz.style.visibility = 'hidden'
+
+      e.stopPropagation()
+      e.preventDefault()
+
+      var fns = e.dataTransfer.files
+
+      renderFiles(fns)
+    }
+
+
+    function renderFiles(fns) {
+        d.getElementById('instructions').style.display = 'none'
+        fs.style.display = 'block'
+
+        for (var j=0; j<fns.length; j++) {
+            var fn = fns[j]
+
+            if (!fn.name.endsWith('.ipynb')) {
+                console.log('File ' + fn.name + ' not a Jupyter notebook, skipping')
+                continue
+            }
+
+            var rd = new FileReader()
+
+            rd.addEventListener('load', (function (j, rd, fn) {
+                return function() {
+                    var dt = JSON.parse(rd.result)
+
+                    // Does a container for this file exist already?
+                    // If not, create it
+                    var tg = doc.querySelector('div[rel="' + fn.name + '"]')
+                    if (tg === null) {
+                        tg = d.createElement('div')
+                        tg.setAttribute('rel', fn.name)
+                        doc.appendChild(tg)
+                    }
+                    
+                    // hide rendered notebook iff
+                    //  1) it's the first one loaded, or
+                    //  2) it's the same one as already showed (refresh)
+                    if (!(fs.getElementsByTagName('option').length == 0 ||
+                        fs.value == fn.name))
+                        tg.style.display = 'none'
+
+                    // populate the <select>
+                    if (fs.querySelector('option[value="' + fn.name + '"]') === null) {
+                        var op = d.createElement('option')
+                        op.textContent = fn.name
+                        fs.appendChild(op)
+                    }
+
+                    nbv.render(dt, tg)
+                }
+            })(j, rd, fn))
+
+            rd.readAsText(fn)
+        }
+    }
 
 </script>
 

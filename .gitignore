@@ -2,3 +2,4 @@ archive/*
 sample-notebooks/*
 *.swp
 vendor/
+TODO.txt
