@@ -12,6 +12,11 @@ There are two ways one can use this. You can use [the demo](https://kokes.github
 
 Or you can use the library itself, there is just a single public method, you call `nbv.render(data, target)`, where `data` is the JSON representation of your Jupyter notebook and `target` is the node where the notebook is to be rendered.
 
+#### Showcase
+
+![screencast](https://dl.dropboxusercontent.com/u/5758323/nbviewer-js/preview.gif)
+
+
 #### Contact
 
 Drop me an email (ondrej.kokes@gmail.com) if you have any questions or suggestions. Contributions welcome.
