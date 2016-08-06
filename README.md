@@ -14,5 +14,5 @@ Or you can use the library itself, there is just a single public method, you cal
 
 #### Contact
 
-Drop me [an email](malto:ondrej.kokes@gmail.com) if you have any questions or suggestions. Contributions welcome.
+Drop me an email (ondrej.kokes@gmail.com) if you have any questions or suggestions. Contributions welcome.
 
