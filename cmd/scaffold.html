@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+        <title>nbviewer.js</title>
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css'/>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js'></script>    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/prism.min.js' data-manual></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/components/prism-python.min.js' data-manual></script>
+
+    <style type='text/css'>
+        body {
+            font: 0.8em Arial, sans-serif;
+            background-color: #eee;
+        }
+    </style>
+
+    <!-- nbviewer.js -->
+    <link rel='stylesheet' href='nbv.css'/>
+    <script src='nbv.js'></script>
+    <script src='notebook.js'></script>
+</head>
+<body>
+
+<div id='doc'>
+
+</div>
+
+
+<script type='text/javascript'>
+    var d = document
+    var doc = d.getElementById('doc')
+    nbv.render(nb, doc)
+</script>
+
+</body>
+</html>
+
