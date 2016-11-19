@@ -5,3 +5,4 @@ vendor/
 TODO.txt
 wip/*
 .DS_Store
+dist/*

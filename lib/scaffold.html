@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8' />
-        <title>nbviewer.js</title>
+    <title>nbviewer.js</title>
 
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css'/>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js'></script>    
@@ -17,22 +17,20 @@
     </style>
 
     <!-- nbviewer.js -->
-    <link rel='stylesheet' href='nbv.css'/>
     <script src='nbv.js'></script>
     <script src='notebook.js'></script>
 </head>
 <body>
 
-<div id='doc'>
+    <div id='doc'>
 
-</div>
+    </div>
 
 
-<script type='text/javascript'>
-    var d = document
-    var doc = d.getElementById('doc')
-    nbv.render(nb, doc)
-</script>
+    <script type='text/javascript'>
+        var doc = document.getElementById('doc');
+        nbv.render(nb, doc);
+    </script>
 
 </body>
 </html>
