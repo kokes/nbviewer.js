@@ -1,6 +1,6 @@
 #!/bin/bash
-js=`cat ../lib/nbv.js | base64`
-html=`cat ../lib/scaffold.html | base64`
+js=`cat ../lib/nbv.js | base64 -w 0`
+html=`cat ../lib/scaffold.html | base64 -w 0`
 
 cat stub.go | sed "s|%js%|$js|g" | sed "s|%html%|$html|g" > nbview.go
 
