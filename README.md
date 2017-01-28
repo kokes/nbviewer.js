@@ -1,6 +1,6 @@
 ### client side rendering of jupyter notebooks
 
-*tl;dr: Render Jupyter notebooks straight in the browser, without a back end converter. Can be used as a library.*
+*tl;dr: Render Jupyter notebooks straight in the browser, without a back end converter. Can be used as a library. Or if you're on macOS, you can even fire it up in Quick Look, see [ipynb-quicklook](https://github.com/tuxu/ipynb-quicklook).*
 
 I often want to read through my Jupyter notebooks, but I rarely have my Jupyter instances running in the right folders. I can't quite use the [online nbviewer](http://nbviewer.jupyter.org/), because I don't have a public URL for these, so I resort to running dummy Jupyter instances or uploading my file as a one-time gist on Github (one I have to delete thereafter). One last possibility is `nbconvert` in the command line.
 
@@ -16,7 +16,7 @@ Or you can use [the demo](https://kokes.github.io/nbviewer.js/viewer.html) (or a
 
 Two immediate use cases come to mind:
 
-1. In Mac OS, you can preview files and this system, [Quick Look](https://support.apple.com/kb/PH21920?locale=en_US), supports plugins. It would be rather handy to have a notebook preview one keystroke away.
+1. ~~In Mac OS, you can preview files and this system, [Quick Look](https://support.apple.com/kb/PH21920?locale=en_US), supports plugins. It would be rather handy to have a notebook preview one keystroke away.~~ This has been done, see [ipynb-quicklook](https://github.com/tuxu/ipynb-quicklook).
 2. Ever since GitHub introduced notebook rendering last year, Gitlab users have been [requesting the same](https://gitlab.com/gitlab-org/gitlab-ce/issues/2508). Gitlab itself recently dropped Python as a dependency, so its reintroduction just for converting notebooks is rather unlikely. A browser-based solution like this could be a good substitute.
 
 ### Tech details
