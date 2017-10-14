@@ -14,11 +14,6 @@ There are two ways one can use this. You can use the library itself, there is ju
 
 Or you can use [the demo](https://kokes.github.io/nbviewer.js/viewer.html) (or a local copy), which is just a simple wrapper of the library, with dropzones and other basic features. There is no data being transferred anywhere, so feel free to bookmark it and use it.
 
-Two immediate use cases come to mind:
-
-1. ~~In Mac OS, you can preview files and this system, [Quick Look](https://support.apple.com/kb/PH21920?locale=en_US), supports plugins. It would be rather handy to have a notebook preview one keystroke away.~~ This has been done, see [ipynb-quicklook](https://github.com/tuxu/ipynb-quicklook).
-2. Ever since GitHub introduced notebook rendering last year, Gitlab users have been [requesting the same](https://gitlab.com/gitlab-org/gitlab-ce/issues/2508). Gitlab itself recently dropped Python as a dependency, so its reintroduction just for converting notebooks is rather unlikely. A browser-based solution like this could be a good substitute.
-
 ### Tech details
 It's rather simple at this point, all the DOM manipulation is written in vanilla JavaScript, Markdown rendering goes through [marked.js](https://github.com/chjj/marked), syntax highlighting is administered by [Prism.js](http://prismjs.com/). The example implementation leverages a few goodies from modern web design, like File API or drag&drops, so a fairly modern browser is necessary.
 
