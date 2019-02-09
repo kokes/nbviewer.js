@@ -19,7 +19,7 @@ It's rather simple at this point, all the DOM manipulation is written in vanilla
 
 #### Showcase
 
-![screencast](https://dl.dropboxusercontent.com/u/5758323/nbviewer-js/preview.gif)
+![screencast](https://raw.githubusercontent.com/kokes/nbviewer.js/master/preview.gif)
 
 
 #### Contact
