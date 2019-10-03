@@ -40,6 +40,10 @@
             font-size: 2em;
             margin: 0 auto;
         }
+        button#download-notebook {
+            display: none;
+            margin: 1em auto 0 auto;
+        }
     </style>
 
     <!-- nbviewer.js -->
@@ -50,6 +54,7 @@
 
 <div id='doc'>
     <select id='file-selector'></select>
+    <button id='download-notebook'>Download this notebook in HTML</button>
     <div id='instructions'>Drag and drop Jupyter notebooks anywhere here</div>
 
 </div>
@@ -58,12 +63,30 @@
 <script type='text/javascript'>
     var d = document
     var doc = d.getElementById('doc')
+    var dn = d.getElementById('download-notebook')
+
+    dn.addEventListener('click', function() {
+        var nbs = d.querySelectorAll('div.rendered-notebook')
+        for (var j=0; j<nbs.length; j++) {
+            if (nbs[j].style.display == 'none') continue
+
+            var link = d.createElement('a')
+            var content = encodeURIComponent(nbs[j].innerHTML)
+            var filename = nbs[j].getAttribute('rel').replace('.ipynb', '.html')
+            link.setAttribute('href', 'data:text/plain;charset=utf-8,' + content)
+            link.setAttribute('download', filename)
+
+            d.body.appendChild(link)
+            link.click()
+            d.body.removeChild(link)
+            break
+        }
+    })
 
     var fs = d.getElementById('file-selector')
     fs.addEventListener('change', function() {
-        var nbs = doc.childNodes
+        var nbs = d.querySelectorAll('div.rendered-notebook')
         for (var j=0; j<nbs.length; j++) {
-            if (nbs[j].nodeName != 'DIV') continue
             if (nbs[j].getAttribute('rel') == fs.value) {
                 nbs[j].style.display = 'block'
                 continue
@@ -115,6 +138,7 @@
     function renderFiles(fns) {
         d.getElementById('instructions').style.display = 'none'
         fs.style.display = 'block'
+        dn.style.display = 'block'
 
         for (var j=0; j<fns.length; j++) {
             var fn = fns[j]
@@ -135,6 +159,7 @@
                     var tg = doc.querySelector('div[rel="' + fn.name + '"]')
                     if (tg === null) {
                         tg = d.createElement('div')
+                        tg.setAttribute('class', 'rendered-notebook')
                         tg.setAttribute('rel', fn.name)
                         doc.appendChild(tg)
                     }
