@@ -8,6 +8,16 @@ I thought it could be easier and more lightweight. So I hacked together this cli
 
 [**Try a live demo**](https://kokes.github.io/nbviewer.js/viewer.html)
 
+#### NEW: Rendering Github notebooks
+
+You can now render notebooks hosted on Github. You can copy and paste their URL in the viewer, linked above, or you can save this following link as a bookmark:
+
+```
+javascript:(function(){location.href="https://kokes.github.io/nbviewer.js/viewer.html#"+btoa(location.href);})();
+```
+
+Clicking this while on Github, looking at a notebook, will launch our nbviewer with this notebook rendered here instead. You'll also get a permanent link for you to share.
+
 #### Usage
 
 There are two ways one can use this. You can use the library itself, there is just a single public method, you call `nbv.render(data, target)`, where `data` is the JSON representation of your Jupyter notebook and `target` is the node where the notebook is to be rendered.
