@@ -227,6 +227,14 @@
         ghl.dispatchEvent(event)
     }
 
+    // `atob` won't decode utf8 characters correctly, we need to do more about this
+    // taken from this excellent answer https://stackoverflow.com/a/30106551
+    function b64DecodeUnicode(str) {
+        return decodeURIComponent(atob(str).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    }
+
     async function render_gh_files() {
         console.log('rendering')
         var hs = window.location.hash.slice(1); // without '#'
@@ -247,7 +255,7 @@
 
         var dd = await fetch(api_url) // TODO: this could fail on API limits
         var ddj = await dd.json()
-        var dt = JSON.parse(atob(ddj.content)) // decode incoming data
+        var dt = JSON.parse(b64DecodeUnicode(ddj.content)) // decode incoming data
         gg = dt;
 
         d.getElementById('instructions').style.display = 'none'
