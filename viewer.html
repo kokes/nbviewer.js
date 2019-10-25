@@ -49,6 +49,20 @@
             display: none;
             margin: 1em auto 0 auto;
         }
+        input#github-link {
+            font-size: 1em;
+            text-align: center;
+            width: 60%;
+        }
+        input#github-link::placeholder {
+            color: #ccc;
+        }
+        div#serving-info {
+            font-size: 1.2em;
+            font-style: italic;
+            margin-top: 1em;
+            text-align: center;
+        }
     </style>
 
     <!-- nbviewer.js -->
@@ -60,7 +74,12 @@
 <div id='doc'>
     <select id='file-selector'></select>
     <button id='download-notebook'>Download this notebook in HTML</button>
-    <div id='instructions'>Drag and drop Jupyter notebooks anywhere here</div>
+    <div id='instructions'>Drag and drop Jupyter notebooks anywhere here...<br />
+    or paste a link from Github: <br />
+    <input id='github-link' placeholder='https://github.com/...'/>
+    </div>
+
+    <div id='serving-info'></div>
 
 </div>
 
@@ -189,6 +208,61 @@
 
             rd.readAsText(fn)
         }
+    }
+
+    // github rendering shenanigans
+    var ghl = document.getElementById('github-link')
+
+    ghl.addEventListener('keyup', (x) => {
+        // TODO: verify the link via regexp or something
+        // and change the input's css accordingly (red border)
+        window.location.hash = btoa(ghl.value);
+        render_gh_files()
+    })
+
+    // what if we loaded a site with a hash already
+    if (window.location.hash.length > 1) {
+        ghl.value = atob(window.location.hash.slice(1))
+        var event = new CustomEvent('keyup')
+        ghl.dispatchEvent(event)
+    }
+
+    async function render_gh_files() {
+        console.log('rendering')
+        var hs = window.location.hash.slice(1); // without '#'
+        var hsurl = atob(hs); // base64 -> text
+
+        // extract relevant bits from the URL and create a URL for the Github API
+        var ghparts = new RegExp(/https:\/\/github.com\/(.+?)\/(.+?)\/blob\/(.+?)\/(.+\.ipynb)/)
+        var m = hsurl.match(ghparts)
+        if (!m) {
+            // TODO: render some place
+            console.error('invalid URL ' + hsurl)
+            return
+        }
+
+        var api_url = `https://api.github.com/repos/${m[1]}/${m[2]}/contents/${m[4]}?ref=${m[3]}`
+        var filename = m[4].split('/').pop()
+        console.log(`translated ${hsurl} into ${api_url}, fetching`)
+
+        var dd = await fetch(api_url) // TODO: this could fail on API limits
+        var ddj = await dd.json()
+        var dt = JSON.parse(atob(ddj.content)) // decode incoming data
+        gg = dt;
+
+        d.getElementById('instructions').style.display = 'none'
+
+        tg = d.createElement('div')
+        tg.setAttribute('class', 'rendered-notebook')
+        tg.setAttribute('rel', hsurl)
+        doc.appendChild(tg)
+
+        nbv.render(dt, tg)
+
+        document.getElementById('download-notebook').style.display = 'block'
+
+        document.getElementById('serving-info').innerHTML = `Serving <code>${filename}</code>. <a href='${window.location}'>Permanent link to this render</a> / <a href='${hsurl}'>original Github source</a>, <a href='${api_url}'>API source data</a>`;
+        // return;
     }
 
 </script>
