@@ -261,7 +261,7 @@
 
         document.getElementById('download-notebook').style.display = 'block'
 
-        document.getElementById('serving-info').innerHTML = `Serving <code>${filename}</code>. <a href='${window.location}'>Permanent link to this render</a> / <a href='${hsurl}'>original Github source</a>, <a href='${api_url}'>API source data</a>`;
+        document.getElementById('serving-info').innerHTML = `Serving <code>${decodeURI(filename)}</code>. <a href='${window.location}'>Permanent link to this render</a> / <a href='${hsurl}'>original Github source</a>, <a href='${api_url}'>API source data</a>`;
         // return;
     }
 
