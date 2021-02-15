@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "jsdom": "^16.4.0",
+    "katex": "^0.12.0",
+    "marked": "^2.0.0",
+    "prismjs": "^1.23.0"
+  }
+}
