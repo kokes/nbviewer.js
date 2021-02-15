@@ -19,11 +19,8 @@ for (const filename of listing) {
     const nb = JSON.parse(fs.readFileSync(fullPath));
     console.log(fullPath)
     nbv.render(nb, target);
+    // huzzah, our first test
+    // console.log(tg.innerHTML)
+    // we can compare this to a snapshot
+
 }
-
-
-// nbv.render(nb, tg);
-
-// // huzzah, our first test
-// console.log(tg.innerHTML)
-// // we can compare this to a snapshot
