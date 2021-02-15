@@ -6,10 +6,10 @@ const prism = require("prismjs");
 
 const { JSDOM } = require("jsdom");
 const document = (new JSDOM("")).window.document;
-const nbv = require("./lib/nbv.js").nbv(document, marked, prism, katex);
+const nbv = require("../lib/nbv.js").nbv_constructor(document, {marked, prism, katex});
 
 const tg = document.createElement("div");
-const nb = JSON.parse(fs.readFileSync("./tests/repro-pr46.ipynb"));
+const nb = JSON.parse(fs.readFileSync("./notebooks/repro-pr46.ipynb"));
 
 nbv.render(nb, tg);
 
