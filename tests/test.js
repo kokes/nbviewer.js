@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 
 const marked = require("marked");
 const katex = require("katex");
@@ -8,11 +9,21 @@ const { JSDOM } = require("jsdom");
 const document = (new JSDOM("")).window.document;
 const nbv = require("../lib/nbv.js").nbv_constructor(document, {marked, prism, katex});
 
-const tg = document.createElement("div");
-const nb = JSON.parse(fs.readFileSync("./notebooks/repro-pr46.ipynb"));
+const target = document.createElement("div");
 
-nbv.render(nb, tg);
+const nbdir = "notebooks";
+const listing = fs.readdirSync(nbdir)
 
-// huzzah, our first test
-console.log(tg.innerHTML)
-// we can compare this to a snapshot
+for (const filename of listing) {
+    const fullPath = path.join(nbdir, filename);
+    const nb = JSON.parse(fs.readFileSync(fullPath));
+    console.log(fullPath)
+    nbv.render(nb, target);
+}
+
+
+// nbv.render(nb, tg);
+
+// // huzzah, our first test
+// console.log(tg.innerHTML)
+// // we can compare this to a snapshot
