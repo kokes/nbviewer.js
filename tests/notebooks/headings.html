@@ -1,0 +1,52 @@
+<div style="max-width: 960px;border: 1px solid&nbsp;#ccc;margin: 1em auto;padding: 1.5em 1.5em 1.5em 7em;background-color: white;box-shadow: 0 0 10px #ccc"><div style="padding-bottom: .5em;"><div><h1 id="tutorial-brief">Tutorial Brief</h1>
+</div></div><div style="padding-bottom: .5em;"><div><p>This tutorial covers the basics of contrlling the layout of IPython widgets.</p>
+<p>We will be using the following functions to do that.</p>
+<ul>
+<li>display()</li>
+<li>widget.add_class()</li>
+<li>widget.set_css()</li>
+</ul>
+<p>Video Tutorial:</p>
+<p><a href="https://www.youtube.com/watch?v=8v7gVQlHJ-g">https://www.youtube.com/watch?v=8v7gVQlHJ-g</a></p>
+</div></div><div style="padding-bottom: .5em;"><div><h3 id="import-the-library">Import the library</h3>
+</div></div><div style="padding-bottom: .5em;"><div style="position: relative;"><span style="display: block;position: absolute;top: 5px;left: -7.5em;width: 7em;font-family: monospace;text-align: right;color: #303fba">In [1]:</span><pre style="background: #f7f7f7;border: 1px solid #cfcfcf;padding: .4em;margin-bottom: 0;margin-top: 0;border-radius: 2px;min-height: .85em" class=" language-undefined"><code class=" language-undefined">from IPython.html import widgets
+from IPython.display import display</code></pre><div style="margin: 1em 0px .5em 0px;"></div></div></div><div style="padding-bottom: .5em;"><div><h5 id="default-layout-vbox-class">Default Layout <code>"vbox"</code> class</h5>
+</div></div><div style="padding-bottom: .5em;"><div><p>By default a container will have a <code>"vbox"</code> css class added to it.</p>
+</div></div><div style="padding-bottom: .5em;"><div style="position: relative;"><span style="display: block;position: absolute;top: 5px;left: -7.5em;width: 7em;font-family: monospace;text-align: right;color: #303fba">In [2]:</span><pre style="background: #f7f7f7;border: 1px solid #cfcfcf;padding: .4em;margin-bottom: 0;margin-top: 0;border-radius: 2px;min-height: .85em" class=" language-undefined"><code class=" language-undefined">v_container = widgets.ContainerWidget()
+
+# Define Widgets
+for counter in range(5):
+    wgt_check = widgets.CheckboxWidget()
+    wgt_text = widgets.TextWidget(description="Name")
+    wgt_select = widgets.DropdownWidget(values=["Guest", "User", "Admin"])
+
+    # Add Widgets
+    v_container.children += (wgt_check, wgt_text, wgt_select)
+
+wgt_button = widgets.ButtonWidget(description="Submit")
+v_container.children += (wgt_button,)
+
+# Display the container
+display(v_container)</code></pre><div style="margin: 1em 0px .5em 0px;"></div></div></div><div style="padding-bottom: .5em;"><div><h3 id="horizontal-layout-with-hbox-class">Horizontal Layout with <code>"hbox"</code> class</h3>
+</div></div><div style="padding-bottom: .5em;"><div style="position: relative;"><span style="display: block;position: absolute;top: 5px;left: -7.5em;width: 7em;font-family: monospace;text-align: right;color: #303fba">In [3]:</span><pre style="background: #f7f7f7;border: 1px solid #cfcfcf;padding: .4em;margin-bottom: 0;margin-top: 0;border-radius: 2px;min-height: .85em" class=" language-undefined"><code class=" language-undefined">v_container = widgets.ContainerWidget()
+
+# Display the container
+display(v_container)
+
+# Define Widgets
+for counter in range(5):
+    wgt_check = widgets.CheckboxWidget()
+    wgt_text = widgets.TextWidget(description="Name")
+    wgt_select = widgets.DropdownWidget(values=["Guest", "User", "Admin"])
+
+    # Add Widgets
+    h_container = widgets.ContainerWidget()
+    h_container.children += (wgt_check, wgt_text, wgt_select)
+    v_container.children += (h_container,)
+    
+    # Change css class of the container
+    h_container.remove_class('vbox')
+    h_container.add_class('hbox')
+
+wgt_button = widgets.ButtonWidget(description="Submit")
+v_container.children += (wgt_button,)</code></pre><div style="margin: 1em 0px .5em 0px;"></div></div></div></div>

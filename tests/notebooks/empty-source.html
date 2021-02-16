@@ -1,0 +1,139 @@
+<div style="max-width: 960px;border: 1px solid&nbsp;#ccc;margin: 1em auto;padding: 1.5em 1.5em 1.5em 7em;background-color: white;box-shadow: 0 0 10px #ccc"><div style="padding-bottom: .5em;"><div><h1 id="python-3---tic-tac-toe">Python 3 - Tic Tac Toe</h1>
+<p>Author : Arunpandian Murugan</p>
+<p>Email ID : <a href="mailto:arunpandian.murugan@outlook.com">arunpandian.murugan@outlook.com</a></p>
+</div></div><div style="padding-bottom: .5em;"><div><h1 id="display-board">Display Board</h1>
+</div></div><div style="padding-bottom: .5em;"><div style="position: relative;"><span style="display: block;position: absolute;top: 5px;left: -7.5em;width: 7em;font-family: monospace;text-align: right;color: #303fba">In [7]:</span><pre style="background: #f7f7f7;border: 1px solid #cfcfcf;padding: .4em;margin-bottom: 0;margin-top: 0;border-radius: 2px;min-height: .85em" class=" language-python"><code class=" language-python">def display_board(my_board_entry):
+    print('     |     |    \n  {0}  |  {1}  |  {2}  \n     |     |    \n-----------------\n     |     |    \n  {3}  |  {4}  |  {5}  \n     |     |    \n-----------------\n     |     |    \n  {6}  |  {7}  |  {8}  \n     |     |    \n'.format(my_board_entry[0], my_board_entry[1], my_board_entry[2], my_board_entry[3], my_board_entry[4], my_board_entry[5], my_board_entry[6], my_board_entry[7], my_board_entry[8]))</code></pre><div style="margin: 1em 0px .5em 0px;"></div></div></div><div style="padding-bottom: .5em;"><div><h1 id="get-user-input">Get User Input</h1>
+</div></div><div style="padding-bottom: .5em;"><div style="position: relative;"><span style="display: block;position: absolute;top: 5px;left: -7.5em;width: 7em;font-family: monospace;text-align: right;color: #303fba">In [ ]:</span><pre style="background: #f7f7f7;border: 1px solid #cfcfcf;padding: .4em;margin-bottom: 0;margin-top: 0;border-radius: 2px;min-height: .85em" class=" language-python"><code class=" language-python">def get_user_input(player1, player2, int_turn_counter, list_board_entry):
+    
+    #Variable Initialisation
+    list_player_symbol = []
+    list_player_symbol.append(player1)
+    list_player_symbol.append(player2)
+    list_input = []
+    flag_get_input = 'Y'
+    
+    while(flag_get_input.upper() == 'Y'):
+        int_board_position = int(input('Player {} --&gt; {}, Enter the valid position number...\t'.format((int_turn_counter%2)+1, list_player_symbol[int_turn_counter%2])))
+        
+        if((int_board_position &gt; 0) and (int_board_position &lt; 10)):
+            #validation check
+            if(list_board_entry[int_board_position - 1] == ' '):
+                list_input.append(int_board_position)
+                list_input.append(list_player_symbol[int_turn_counter%2])
+                return(list_input)
+            else:
+                print('Entered position is already filled, so kindly provide some other free position...\n')
+                flag_get_input = input('Do want to continue ...[Y/N]\t ')
+                if(flag_get_input.upper() == 'N'):
+                    list_input.append('End')
+                    return(list_input)
+        
+        elif((int_board_position &lt; 0) or (int_board_position &gt; 10)):
+            print('Invalid position number | kindly enter the position between 1 to 9...\n')
+            flag_get_input = input('Do want to continue ...[Y/N]\t ')
+            if(flag_get_input.upper() == 'N'):
+                list_input.append('End')
+                return(list_input)</code></pre><div style="margin: 1em 0px .5em 0px;"></div></div></div><div style="padding-bottom: .5em;"><div><h1 id="clear-cell">Clear Cell</h1>
+</div></div><div style="padding-bottom: .5em;"><div style="position: relative;"><span style="display: block;position: absolute;top: 5px;left: -7.5em;width: 7em;font-family: monospace;text-align: right;color: #303fba">In [9]:</span><pre style="background: #f7f7f7;border: 1px solid #cfcfcf;padding: .4em;margin-bottom: 0;margin-top: 0;border-radius: 2px;min-height: .85em" class=" language-python"><code class=" language-python">def clear_cell():
+    from IPython.display import clear_output
+    
+    for i in range(2):
+        clear_output()
+        
+    ##import time
+    ##time.sleep(2) </code></pre><div style="margin: 1em 0px .5em 0px;"></div></div></div><div style="padding-bottom: .5em;"><div><h2 id="core-algorithm">Core Algorithm</h2>
+</div></div><div style="padding-bottom: .5em;"><div style="position: relative;"><span style="display: block;position: absolute;top: 5px;left: -7.5em;width: 7em;font-family: monospace;text-align: right;color: #303fba">In [10]:</span><pre style="background: #f7f7f7;border: 1px solid #cfcfcf;padding: .4em;margin-bottom: 0;margin-top: 0;border-radius: 2px;min-height: .85em" class=" language-python"><code class=" language-python">def core_algorithm(list_board_entry):
+    #variable initialise
+    temp_list_board_entry = list_board_entry.copy()
+
+    if(temp_list_board_entry.count('X') &gt;= 3):
+        if(temp_list_board_entry[0:3].count('X') == 3 or temp_list_board_entry[3:6].count('X') == 3 or temp_list_board_entry[6:9].count('X') == 3 or (temp_list_board_entry[0] == 'X' and temp_list_board_entry[4] == 'X' and temp_list_board_entry[8] == 'X') or (temp_list_board_entry[2] == 'X' and temp_list_board_entry[4] == 'X' and temp_list_board_entry[6] == 'X') ):
+            print('Hurrah!!! Player 1 Won...')
+            return 'End'
+        
+    elif(temp_list_board_entry[0:3].count('O') == 3 or temp_list_board_entry[3:6].count('O') == 3 or temp_list_board_entry[6:9].count('O') == 3 or (temp_list_board_entry[0] == 'O' and temp_list_board_entry[4] == 'O' and temp_list_board_entry[8] == 'O') or (temp_list_board_entry[2] == 'O' and temp_list_board_entry[4] == 'O' and temp_list_board_entry[6] == 'O') ):
+        if(tuple(temp_list) in dump_set):
+            print('Hurrah!!! Player 2 Won...')
+            return 'End'
+</code></pre><div style="margin: 1em 0px .5em 0px;"></div></div></div><div style="padding-bottom: .5em;"><div><h1 id="driver-code">Driver Code</h1>
+</div></div><div style="padding-bottom: .5em;"><div style="position: relative;"><span style="display: block;position: absolute;top: 5px;left: -7.5em;width: 7em;font-family: monospace;text-align: right;color: #303fba">In [11]:</span><pre style="background: #f7f7f7;border: 1px solid #cfcfcf;padding: .4em;margin-bottom: 0;margin-top: 0;border-radius: 2px;min-height: .85em" class=" language-python"><code class=" language-python">def tic_tac_toe_main():
+    
+    #Initalise Flag
+    continue_flag = 'Y'
+    
+    while(continue_flag.upper() == 'Y'):
+        
+        #Reset the Flag
+        continue_flag = ''
+        
+        #Variable Initialisation
+        int_turn_counter = 0
+        list_board_entry = [" ", " ", " ", " ", " ", " ", " ", " ", " " ]
+    
+        print("Welcome to Arun's Tic Tac Toe Game using Python 3\n")
+    
+        #Select X or O
+        player_choice = input('Player 1, do you want to be X or O...\t')
+    
+        if(player_choice.upper() == 'X'):
+    
+            #iterating through game
+            print('Player 1 --&gt; X \nPlayer 2 --&gt; O')
+            while(int_turn_counter &lt; 9):
+                list_input = get_user_input('X', 'O', int_turn_counter, list_board_entry)
+            
+                if(list_input[0] == 'End'):
+                    break
+                    
+                #Displaying the updated board...   
+                list_board_entry[int(list_input[0]) -1] = list_input[1]
+                clear_cell()
+                display_board(list_board_entry)
+            
+                flag = core_algorithm(list_board_entry) 
+                if(flag == 'End'):
+                    break
+                
+                int_turn_counter += 1 
+         
+        elif(player_choice.upper() == 'O'):
+        
+            #iterating through game
+            print('Player 1 --&gt; O \nPlayer 2 --&gt; X')
+            while(int_turn_counter &lt; 9):
+                list_input = get_user_input('O', 'X', int_turn_counter, list_board_entry)
+                
+                if(list_input[0] == 'End'):
+                    break
+                    
+                #Displaying the updated board...
+                list_board_entry[int(list_input[0]) - 1] = list_input[1]
+                clear_cell()
+                display_board(list_board_entry)
+            
+                flag = core_algorithm(list_board_entry) 
+                if(flag == 'End'):
+                    break
+                
+                int_turn_counter += 1 
+            
+        else:
+            print('Invalid Symbol selection...Exiting')
+    
+        if(list_input[0] == 'End' or flag == 'End'):
+            continue_flag = 'N'
+        else:
+            continue_flag = input('Do want to continue ...[Y/N]\t ')</code></pre><div style="margin: 1em 0px .5em 0px;"></div></div></div><div style="padding-bottom: .5em;"><div style="position: relative;"><span style="display: block;position: absolute;top: 5px;left: -7.5em;width: 7em;font-family: monospace;text-align: right;color: #303fba">In [ ]:</span><pre style="background: #f7f7f7;border: 1px solid #cfcfcf;padding: .4em;margin-bottom: 0;margin-top: 0;border-radius: 2px;min-height: .85em" class=" language-python"><code class=" language-python">tic_tac_toe_main()</code></pre><div style="margin: 1em 0px .5em 0px;"><div style="position: relative;"><pre>     |     |    
+     |     |     
+     |     |    
+-----------------
+     |     |    
+     |  X  |  O  
+     |     |    
+-----------------
+     |     |    
+     |     |     
+     |     |    
+
+</pre></div></div></div></div><div style="padding-bottom: .5em;"><div style="position: relative;"><span style="display: block;position: absolute;top: 5px;left: -7.5em;width: 7em;font-family: monospace;text-align: right;color: #303fba">In [ ]:</span><pre style="background: #f7f7f7;border: 1px solid #cfcfcf;padding: .4em;margin-bottom: 0;margin-top: 0;border-radius: 2px;min-height: .85em" class=" language-python"><code class=" language-python"></code></pre><div style="margin: 1em 0px .5em 0px;"></div></div></div></div>

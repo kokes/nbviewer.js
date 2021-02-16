@@ -26,6 +26,14 @@ for (const filename of listing) {
     const nb = JSON.parse(fs.readFileSync(fullPath));
     nbv.render(nb, target);
 
+    const htmlPath = fullPath.replace(".ipynb", ".html");
+    const htmlOriginal = fs.readFileSync(htmlPath);
+
+    if (target.innerHTML != htmlOriginal) {
+        fs.writeFileSync(htmlPath.replace(".html", "_test.html"), target.innerHTML);
+        throw new Error(`rendering of ${filename} did not result in the HTML format expected`);
+    }
+
     // useful for testing new files:
     // try {
     //     nbv.render(nb, target);
